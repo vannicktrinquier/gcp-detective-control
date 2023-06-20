@@ -1,0 +1,38 @@
+
+{
+  "taskGroups": [
+    {
+      "taskSpec": {
+        "runnables": [
+          {
+            "script": {
+              "text": "#!/bin/sh\n\necho 'Downloading CFT Scorecard'\ncurl -o cft https://storage.googleapis.com/cft-cli/latest/cft-linux-amd64\nchmod +x cft\n\necho 'Downloading sample policy library'\ngit clone https://github.com/GoogleCloudPlatform/policy-library.git\ncp policy-library/samples/storage_location.yaml policy-library/policies/constraints/\nmkdir -p ./reports\n\n./cft scorecard --policy-path ./policy-library --bucket ${CAI_BUCKET} --target-folder ${SCAN_FOLDER_ID} --output-format json --output-path ./reports --refresh\ngsutil cp ./reports/scorecard.json gs://${CAI_BUCKET}"
+            },
+            "environment": {
+              "variables": {
+                "SCAN_FOLDER_ID": "<SCAN_FOLDER_ID_TO_REPLACE>",
+                "CAI_BUCKET": "<CAI_BUCKET_TO_REPLACE>"
+              }
+            }
+          }
+        ],
+        "computeResource": {
+          "cpuMilli": 8000,
+          "memoryMib": 32768
+        },
+        "maxRetryCount": 1,
+        "maxRunDuration": "36000s"
+      },
+      "taskCount": 1,
+      "parallelism": 1
+    }
+  ],
+  "logsPolicy": {
+    "destination": "CLOUD_LOGGING"
+  },
+  "allocationPolicy": {
+    "serviceAccount": {
+      "email": "batch-detective-sa@<PROJECT_ID_TO_REPLACE>.iam.gserviceaccount.com"
+    }
+  }
+}
