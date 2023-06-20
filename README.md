@@ -1,6 +1,8 @@
 # Detective control using Cloud Batch
 
-## Setting up detective control for a project
+The steps decribed below refered to an article posted in Medium showing how to implement periodical detective control in few command using Cloud Batch, Cloud Scheduler and CFT Scorecard.
+
+## Setting up detective control in GCP
 
 1. Set  environment variables
 ```
@@ -152,28 +154,17 @@ gcloud scheduler jobs create http detective-job --schedule="0 */3 * * *" \
     --message-body-from-file=batch-organization.json
 ```
 
-## Setting up detective control for an organization
-
-Similar setup than above is needed. However, some changes are needed to provide permissions on the full organization 
-
-1. Provide permissions to the full organization
-```
-ORGANIZATION_ID=<ORGANIZATION_ID_TO_REPLACE>
-gcloud organizations add-iam-policy-binding $ORGANIZATION_ID \
-    --role roles/cloudasset.viewer \
-    --member \
-    serviceAccount:$BATCH_DETECTIVE_SA@$PROJECT_ID.iam.gserviceaccount.com 
-```
 
 ## How to validate script execution
 
-1. (Optional)Execute detect.sh to find violation of a specific project. This command can be used to ensure that the script is working as expected
+1. Execute detect.sh to find violation of a specific project. This command can be used to ensure that the script is working as expected
 ```
-chmod +x ./script/detect*.sh 
-./script/detect-project.sh 
+cd scripts
+chmod +x ./detect*.sh 
+./detect-project.sh 
 ```
 
-2. 
+2. Command below can be used to replace newline by '\n' character and copy it in the template file
 ```
 < detect-project.sh sed '$!G' | paste -sd '\\n' -
 ```
