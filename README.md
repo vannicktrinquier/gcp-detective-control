@@ -125,6 +125,8 @@ gcloud batch jobs submit detective-job-project \
 ```
 
 8. Schedule periodically the checks using Cloud Scheduler
+The command below is creating of Cloud Schedule cron to perform detective control on the full organization. You will need to adapt if the scope is for a folder or a project.
+
 ```
 REGION=asia-southeast1
 SCHEDULER_SA=scheduler-detective-sa
