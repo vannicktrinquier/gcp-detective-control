@@ -170,3 +170,6 @@ chmod +x ./detect*.sh
 ```
 < detect-project.sh sed '$!G' | paste -sd '\\n' -
 ```
+
+## Full article
+Step by step guide and explanation can be found [this Medium article](https://medium.com/google-cloud/evaluating-your-existing-gcp-resources-810ef901ed40).
